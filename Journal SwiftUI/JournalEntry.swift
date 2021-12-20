@@ -7,11 +7,23 @@
 
 import Foundation
 
-struct JournalEntry  : Identifiable {
+struct JournalEntry  : Identifiable, Equatable {
     var id = UUID()
-    
     var content : String
-    var date : Date = Date()
+    
+    var unformatedDate : Date = Date()
+    private let dateFormatter = DateFormatter()
+    
+    var date : String {
+        dateFormatter.dateStyle = .medium
+        
+        return dateFormatter.string(from: unformatedDate)
+    }
+    
+//   static func == (lhs: JournalEntry, rhs: JournalEntry) -> Bool {
+//       return lhs.id == rhs.id && lhs.content == rhs.content
+//   }
+    
 }
 
 

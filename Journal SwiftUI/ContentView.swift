@@ -8,42 +8,62 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject var journal = Journal()
+    @EnvironmentObject var journal : Journal
+    
+    @State var showInfo : Bool = false
     
     var body: some View {
         NavigationView {
-            List() {
-                ForEach(journal.entries) { entry in
-                    NavigationLink(destination: JournalEntryView(entry: entry)) {
-                        RowView(entry: entry)
+            VStack {
+            
+                List() {
+                    ForEach(journal.entries) { entry in
+                        NavigationLink(destination: JournalEntryView(entry: entry)) {
+                            RowView(entry: entry)
+                        }
                     }
+                    .onDelete(perform: { indexSet in
+                        journal.entries.remove(atOffsets: indexSet)
+                    })
                 }
-                .onDelete(perform: { indexSet in
-                    journal.entries.remove(atOffsets: indexSet)
+                .navigationTitle("Journal")
+                .navigationBarItems(trailing: NavigationLink(destination: JournalEntryView()) {
+                    Image(systemName: "plus.circle")
                 })
+                
+                Button(action: {
+                    showInfo = true
+                }, label: {
+                    Text("Open sheet")
+                })
+                    .sheet(isPresented: $showInfo) {
+                        SheetView(isPresented: $showInfo)
+                    }
+                
             }
-            .navigationTitle("Journal")
-            .navigationBarItems(trailing: NavigationLink(destination: JournalEntryView()) {
-                Image(systemName: "plus.circle")
-            })
         }.navigationViewStyle(.stack)
     }
 }
 
+struct SheetView : View {
+    @Binding var isPresented : Bool
+    
+    var body: some View {
+        Button(action: {
+            isPresented = false
+        }, label: {
+            Text("close")
+        })
+    }
+    
+}
 
 struct RowView : View {
     var entry : JournalEntry
     
-    var date : String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .medium
-        
-        return dateFormatter.string(from: entry.date)
-    }
-    
     var body: some View {
         HStack {
-            Text(date)
+            Text(entry.date)
             Spacer()
             Text(entry.content.prefix(7) + "...")
         }
@@ -51,11 +71,9 @@ struct RowView : View {
 }
 
 
-
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        //RowView(entry: JournalEntry(content: "Vi testar med en dags anteckning"))
-        ContentView()
-    }
-}
+//struct ContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        //RowView(entry: JournalEntry(content: "Vi testar med en dags anteckning"))
+//        ContentView()
+//    }
+//}

@@ -14,6 +14,13 @@ class Journal : ObservableObject  {
         addMockData()
     }
     
+    func update(entry: JournalEntry, with content: String) {
+         if let index = entries.firstIndex(of: entry) {
+             entries[index].content = content
+        }
+    }
+    
+    
     func addMockData() {
         entries.append(JournalEntry(content: "Dag 1"))
         entries.append(JournalEntry(content: "Jag åt mat"))
