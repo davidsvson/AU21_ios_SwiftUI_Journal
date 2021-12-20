@@ -9,20 +9,13 @@ import SwiftUI
 
 struct JournalEntryView: View {
     var entry : JournalEntry? = nil
-   // @State var content : String = ""
     
     var body: some View {
-//
-//        VStack {
-//            TextEditor(text: $content)
-//            Text(content)
-//        }
         if let entry = entry {
             Text(entry.content)
         } else {
             Text("nytt entry")
-        }
-       
+        }       
     }
 }
 

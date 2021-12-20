@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @StateObject var journal = Journal()
-   
+    
     var body: some View {
         NavigationView {
             List() {
@@ -22,12 +22,11 @@ struct ContentView: View {
                     journal.entries.remove(atOffsets: indexSet)
                 })
             }
-            .navigationBarTitle("Journal")
+            .navigationTitle("Journal")
             .navigationBarItems(trailing: NavigationLink(destination: JournalEntryView()) {
-                                    Image(systemName: "plus.circle")
+                Image(systemName: "plus.circle")
             })
-        }
-       
+        }.navigationViewStyle(.stack)
     }
 }
 
