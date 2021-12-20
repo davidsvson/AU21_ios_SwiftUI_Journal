@@ -12,6 +12,7 @@ struct ContentView: View {
     
     @State var showInfo : Bool = false
     
+
     var body: some View {
         NavigationView {
             VStack {
